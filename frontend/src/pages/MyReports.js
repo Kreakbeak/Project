@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { reportAPI, pestAPI } from '../api';
+import { reportAPI } from '../api';
+import { downloadReportPDF } from '../utils/pdfExport';
 
 function MyReports() {
   const [reports, setReports] = useState([]);
@@ -73,6 +74,20 @@ function MyReports() {
                   </div>
                   <div style={{ marginLeft: '1rem', display: 'flex', gap: '0.5rem', flexDirection: 'column' }}>
                     <Link to={`/farmer/report/${report._id}`}><button>View Details</button></Link>
+                    <button 
+                      onClick={() => downloadReportPDF(report)}
+                      style={{
+                        backgroundColor: '#16a34a',
+                        color: '#fff',
+                        border: 'none',
+                        padding: '0.5rem 1rem',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        fontSize: '0.9rem'
+                      }}
+                    >
+                      📥 Download
+                    </button>
                     <button className="danger" onClick={() => handleDelete(report._id)}>Delete</button>
                   </div>
                 </div>

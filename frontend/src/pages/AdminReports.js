@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { reportAPI } from '../api';
+import { downloadReportPDF } from '../utils/pdfExport';
 
 function AdminReports() {
   const [reports, setReports] = useState([]);
@@ -84,9 +85,25 @@ function AdminReports() {
                     </td>
                     <td>{new Date(report.createdAt).toLocaleDateString()}</td>
                     <td>
-                      <Link to={`/admin/report/${report._id}`}>
-                        <button style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>View</button>
-                      </Link>
+                      <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <Link to={`/admin/report/${report._id}`}>
+                          <button style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>View</button>
+                        </Link>
+                        <button 
+                          onClick={() => downloadReportPDF(report)}
+                          style={{
+                            padding: '0.5rem 1rem',
+                            fontSize: '0.9rem',
+                            backgroundColor: '#16a34a',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          📥
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

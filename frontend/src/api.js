@@ -67,6 +67,23 @@ export const reportAPI = {
   deleteReport: (id) =>
     axios.delete(`${API_URL}/reports/${id}`, {
       headers: { Authorization: `Bearer ${getAuthToken()}` }
+    }),
+  referPestToReport: (reportId, pestId) =>
+    axios.post(`${API_URL}/reports/refer-pest`, 
+      { reportId, pestId },
+      { headers: { Authorization: `Bearer ${getAuthToken()}` } }
+    )
+};
+
+// Stats API
+export const statsAPI = {
+  getAdminStats: () =>
+    axios.get(`${API_URL}/stats/admin`, {
+      headers: { Authorization: `Bearer ${getAuthToken()}` }
+    }),
+  getFarmerStats: () =>
+    axios.get(`${API_URL}/stats/farmer`, {
+      headers: { Authorization: `Bearer ${getAuthToken()}` }
     })
 };
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import { reportAPI, pestAPI } from '../api';
+import { downloadReportPDF } from '../utils/pdfExport';
 
 function FarmerReportDetail() {
   const { id } = useParams();
@@ -39,7 +40,28 @@ function FarmerReportDetail() {
         </nav>
       </nav>
       <div className="container">
-        <h2>Report Detail</h2>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+          <h2>Report Detail</h2>
+          {report && (
+            <button 
+              onClick={() => downloadReportPDF(report)}
+              style={{
+                backgroundColor: '#16a34a',
+                color: '#fff',
+                border: 'none',
+                padding: '0.75rem 1.5rem',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontWeight: '600',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem'
+              }}
+            >
+              📥 Download Report
+            </button>
+          )}
+        </div>
         
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'flex-start' }}>
           {/* Report Information - Left Column */}
@@ -224,14 +246,15 @@ function FarmerReportDetail() {
             <button 
               onClick={() => setSelectedPest(null)}
               style={{
-                backgroundColor: '#ec4899',
+                backgroundColor: '#ef4444',
                 color: '#fff',
                 border: 'none',
                 padding: '0.75rem 1.5rem',
                 borderRadius: '4px',
                 cursor: 'pointer',
                 width: '100%',
-                marginTop: '1rem'
+                marginTop: '1rem',
+                fontWeight: '600'
               }}
             >
               Close

@@ -16,6 +16,18 @@ const getAuthToken = () => {
   return localStorage.getItem('token');
 };
 
+// Helper function to decode JWT and get user role
+const getUserRole = () => {
+  const token = getAuthToken();
+  if (!token) return null;
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.role;
+  } catch (e) {
+    return null;
+  }
+};
+
 // Auth API
 export const authAPI = {
   register: (name, email, password, phone, role, location) =>
@@ -187,4 +199,4 @@ export const userAPI = {
     )
 };
 
-export { setAuthToken, getAuthToken };
+export { setAuthToken, getAuthToken, getUserRole };

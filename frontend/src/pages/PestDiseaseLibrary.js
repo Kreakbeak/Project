@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { pestAPI } from '../api';
+import { pestAPI, getUserRole } from '../api';
 
 function PestDiseaseLibrary() {
   const [pests, setPests] = useState([]);
@@ -8,7 +8,13 @@ function PestDiseaseLibrary() {
   const [error, setError] = useState('');
   const [selectedPest, setSelectedPest] = useState(null);
   const [filter, setFilter] = useState('Both');
+  const [userRole, setUserRole] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const role = getUserRole();
+    setUserRole(role);
+  }, []);
 
   useEffect(() => {
     fetchPests();
@@ -42,10 +48,19 @@ function PestDiseaseLibrary() {
       <nav className="navbar">
         <h1>Pest & Disease Library</h1>
         <nav>
-          <Link to="/farmer/dashboard">Dashboard</Link>
-          <Link to="/farmer/submit-report">Submit Report</Link>
-          <Link to="/farmer/my-reports">My Reports</Link>
-          <span onClick={handleLogout} style={{ cursor: 'pointer' }}>Logout</span>
+          {userRole === 'agronomist' ? (
+            <>
+              <Link to="/agronomist/dashboard">Dashboard</Link>
+              <span onClick={handleLogout} style={{ cursor: 'pointer' }}>Logout</span>
+            </>
+          ) : (
+            <>
+              <Link to="/farmer/dashboard">Dashboard</Link>
+              <Link to="/farmer/submit-report">Submit Report</Link>
+              <Link to="/farmer/my-reports">My Reports</Link>
+              <span onClick={handleLogout} style={{ cursor: 'pointer' }}>Logout</span>
+            </>
+          )}
         </nav>
       </nav>
 

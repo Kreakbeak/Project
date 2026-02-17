@@ -93,8 +93,14 @@ exports.getReportById = async (req, res) => {
       });
     }
 
-    // Check authorization: allow if admin or if farmer viewing own report
+    // Check authorization: allow if admin, agronomist, or if farmer viewing own report
     if (req.user.role === 'farmer' && report.farmerId._id.toString() !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: 'Not authorized to view this report'
+      });
+    }
+    if (req.user.role === 'officer' && report.farmerId._id.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
         message: 'Not authorized to view this report'
@@ -115,12 +121,12 @@ exports.getReportById = async (req, res) => {
 
 exports.updateReportStatus = async (req, res) => {
   try {
-    const { status, treatment } = req.body;
+    const { status, treatment, feedback } = req.body;
 
-    if (!status || !['Pending', 'Identified', 'Resolved'].includes(status)) {
+    if (!status || !['Pending', 'Identified', 'Reviewed', 'Resolved'].includes(status)) {
       return res.status(400).json({
         success: false,
-        message: 'Invalid status. Must be Pending, Identified, or Resolved'
+        message: 'Invalid status. Must be Pending, Identified, Reviewed, or Resolved'
       });
     }
 
@@ -136,6 +142,9 @@ exports.updateReportStatus = async (req, res) => {
     report.status = status;
     if (treatment) {
       report.treatment = treatment;
+    }
+    if (feedback) {
+      report.feedback = feedback;
     }
 
     report = await report.save();

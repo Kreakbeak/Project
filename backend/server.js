@@ -22,6 +22,7 @@ app.use('/api/auth', require('./src/routes/auth'));
 app.use('/api/reports', require('./src/routes/reports'));
 app.use('/api/pests', require('./src/routes/pestDisease'));
 app.use('/api/stats', require('./src/routes/stats'));
+app.use('/api/users', require('./src/routes/users'));
 
 // Health check
 app.get('/api/health', (req, res) => {

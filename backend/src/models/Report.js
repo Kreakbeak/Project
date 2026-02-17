@@ -13,7 +13,7 @@ const reportSchema = new mongoose.Schema({
   },
   imagePath: {
     type: String,
-    required: true
+    default: ''
   },
   description: {
     type: String,
@@ -26,10 +26,14 @@ const reportSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['Pending', 'Identified', 'Resolved'],
+    enum: ['Pending', 'Identified', 'Reviewed', 'Resolved'],
     default: 'Pending'
   },
   treatment: {
+    type: String,
+    default: ''
+  },
+  feedback: {
     type: String,
     default: ''
   },

@@ -44,6 +44,7 @@ function AdminDashboard() {
     switch(status) {
       case 'Pending': return { bg: '#fffbeb', text: '#b45309' };
       case 'Identified': return { bg: '#f3f0ff', text: '#7c3aed' };
+      case 'Reviewed': return { bg: '#e0f2fe', text: '#0369a1' };
       case 'Resolved': return { bg: '#f0fdf4', text: '#059669' };
       default: return { bg: '#f8fafc', text: '#64748b' };
     }
@@ -55,6 +56,7 @@ function AdminDashboard() {
         <h1>Pest & Disease Reporting System - Admin</h1>
         <nav>
           <Link to="/admin/reports">View Reports</Link>
+          <Link to="/admin/users">Manage Users</Link>
           <Link to="/admin/pests">Manage Library</Link>
           <span onClick={handleLogout} style={{ cursor: 'pointer' }}>Logout</span>
         </nav>

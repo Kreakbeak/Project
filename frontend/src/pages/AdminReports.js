@@ -52,6 +52,7 @@ function AdminReports() {
             <option value="All">All Reports</option>
             <option value="Pending">Pending</option>
             <option value="Identified">Identified</option>
+            <option value="Reviewed">Reviewed</option>
             <option value="Resolved">Resolved</option>
           </select>
           <p style={{ marginTop: '0.5rem', color: '#7f8c8d' }}>Total: {filteredReports.length} reports</p>

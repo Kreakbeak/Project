@@ -28,7 +28,18 @@ export const authAPI = {
       location
     }),
   login: (email, password) =>
-    axios.post(`${API_URL}/auth/login`, { email, password })
+    axios.post(`${API_URL}/auth/login`, { email, password }),
+  createUserByAdmin: (name, email, password, phone, role, location) =>
+    axios.post(`${API_URL}/auth/create-user`, {
+      name,
+      email,
+      password,
+      phone,
+      role,
+      location
+    }, {
+      headers: { Authorization: `Bearer ${getAuthToken()}` }
+    })
 };
 
 // Report API
@@ -84,6 +95,10 @@ export const statsAPI = {
   getFarmerStats: () =>
     axios.get(`${API_URL}/stats/farmer`, {
       headers: { Authorization: `Bearer ${getAuthToken()}` }
+    }),
+  getAgronomistStats: () =>
+    axios.get(`${API_URL}/stats/agronomist`, {
+      headers: { Authorization: `Bearer ${getAuthToken()}` }
     })
 };
 
@@ -137,6 +152,39 @@ export const pestAPI = {
     axios.delete(`${API_URL}/pests/${id}`, {
       headers: { Authorization: `Bearer ${getAuthToken()}` }
     })
+};
+
+// User Management API
+export const userAPI = {
+  getAllUsers: () =>
+    axios.get(`${API_URL}/users`, {
+      headers: { Authorization: `Bearer ${getAuthToken()}` }
+    }),
+  getPendingUsers: () =>
+    axios.get(`${API_URL}/users/pending`, {
+      headers: { Authorization: `Bearer ${getAuthToken()}` }
+    }),
+  getUserById: (userId) =>
+    axios.get(`${API_URL}/users/${userId}`, {
+      headers: { Authorization: `Bearer ${getAuthToken()}` }
+    }),
+  approveUser: (userId) =>
+    axios.put(`${API_URL}/users/${userId}/approve`, {}, {
+      headers: { Authorization: `Bearer ${getAuthToken()}` }
+    }),
+  rejectUser: (userId) =>
+    axios.delete(`${API_URL}/users/${userId}/reject`, {
+      headers: { Authorization: `Bearer ${getAuthToken()}` }
+    }),
+  removeUser: (userId) =>
+    axios.delete(`${API_URL}/users/${userId}/remove`, {
+      headers: { Authorization: `Bearer ${getAuthToken()}` }
+    }),
+  updateUserRole: (userId, role) =>
+    axios.put(`${API_URL}/users/${userId}/role`, 
+      { role },
+      { headers: { Authorization: `Bearer ${getAuthToken()}` } }
+    )
 };
 
 export { setAuthToken, getAuthToken };

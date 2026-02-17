@@ -18,7 +18,7 @@ function Login() {
       const response = await authAPI.login(email, password);
       setAuthToken(response.data.token);
       const role = response.data.user.role;
-      navigate(role === 'admin' ? '/admin/dashboard' : '/farmer/dashboard');
+      navigate(role === 'admin' ? '/admin/dashboard' : role === 'agronomist' ? '/agronomist/dashboard' : '/farmer/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
     } finally {
@@ -53,9 +53,6 @@ function Login() {
           {loading ? 'Logging in...' : 'Login'}
         </button>
       </form>
-      <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-        Don't have an account? <Link to="/register">Register here</Link>
-      </p>
     </div>
   );
 }

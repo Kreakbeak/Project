@@ -101,3 +101,48 @@ exports.getFarmerStats = async (req, res) => {
     });
   }
 };
+
+// Get dashboard statistics for agronomist (same as admin - see all reports)
+exports.getAgronomistStats = async (req, res) => {
+  try {
+    const totalReports = await Report.countDocuments();
+    const pendingReports = await Report.countDocuments({ status: 'Pending' });
+    const identifiedReports = await Report.countDocuments({ status: 'Identified' });
+    const reviewedReports = await Report.countDocuments({ status: 'Reviewed' });
+    const resolvedReports = await Report.countDocuments({ status: 'Resolved' });
+
+    // Get reports by crop type
+    const reportsByCrop = await Report.aggregate([
+      { $group: { _id: '$cropType', count: { $sum: 1 } } },
+      { $sort: { count: -1 } }
+    ]);
+
+    // Get recent reports
+    const recentReports = await Report.find()
+      .populate('farmerId', 'name email')
+      .sort({ createdAt: -1 })
+      .limit(10);
+
+    // Resolution rate
+    const resolutionRate = totalReports > 0 ? ((resolvedReports / totalReports) * 100).toFixed(1) : 0;
+
+    res.status(200).json({
+      success: true,
+      stats: {
+        totalReports,
+        pendingReports,
+        identifiedReports,
+        reviewedReports,
+        resolvedReports,
+        resolutionRate: parseFloat(resolutionRate),
+        reportsByCrop,
+        recentReports
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
